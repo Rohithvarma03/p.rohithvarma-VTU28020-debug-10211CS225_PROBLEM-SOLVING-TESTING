@@ -1,0 +1,84 @@
+import java.io.*;
+import java.util.*;
+
+interface PerformOperation {
+    boolean check(int a);
+}
+
+class MyMath {
+
+    public PerformOperation isOdd() {
+        return new PerformOperation() {
+            public boolean check(int a) {
+                return a % 2 != 0;
+            }
+        };
+    }
+
+    public PerformOperation isPrime() {
+        return new PerformOperation() {
+            public boolean check(int a) {
+                if (a < 2) {
+                    return false;
+                }
+
+                for (int i = 2; i * i <= a; i++) {
+                    if (a % i == 0) {
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+        };
+    }
+
+    public PerformOperation isPalindrome() {
+        return new PerformOperation() {
+            public boolean check(int a) {
+                int original = a;
+                int reverse = 0;
+
+                while (a > 0) {
+                    int digit = a % 10;
+                    reverse = reverse * 10 + digit;
+                    a = a / 10;
+                }
+
+                return original == reverse;
+            }
+        };
+    }
+}
+
+public class Solution {
+
+    public static void main(String[] args) throws Exception {
+        Scanner sc = new Scanner(System.in);
+        MyMath myMath = new MyMath();
+
+        int T = sc.nextInt();
+
+        while (T-- > 0) {
+            int condition = sc.nextInt();
+            int number = sc.nextInt();
+
+            PerformOperation operation;
+
+            if (condition == 1) {
+                operation = myMath.isOdd();
+                System.out.println(operation.check(number) ? "ODD" : "EVEN");
+            }
+            else if (condition == 2) {
+                operation = myMath.isPrime();
+                System.out.println(operation.check(number) ? "PRIME" : "COMPOSITE");
+            }
+            else {
+                operation = myMath.isPalindrome();
+                System.out.println(operation.check(number) ? "PALINDROME" : "NOT PALINDROME");
+            }
+        }
+
+        sc.close();
+    }
+}
